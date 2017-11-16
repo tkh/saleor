@@ -25,7 +25,8 @@ def shipping_method_list(request):
 @superuser_required
 def shipping_method_edit(request, method):
     form = ShippingMethodForm(request.POST or None, instance=method)
-    formset = ShippingMethodCountryFormSet(request.POST or None, instance=method)
+    formset = ShippingMethodCountryFormSet(
+        request.POST or None, instance=method)
     if form.is_valid() and formset.is_valid():
         shipping_method = form.save()
         formset.save()
@@ -71,8 +72,10 @@ def shipping_method_delete(request, pk):
         messages.success(
             request,
             pgettext_lazy(
-                'Dashboard message', '%(shipping_method_name)s successfully removed') % {
+                'Dashboard message',
+                '%(shipping_method_name)s successfully removed') % {
                     'shipping_method_name': shipping_method})
         return redirect('dashboard:shipping-methods')
     ctx = {'shipping_method': shipping_method}
-    return TemplateResponse(request, 'dashboard/shipping/modal/confirm_delete.html', ctx)
+    return TemplateResponse(
+        request, 'dashboard/shipping/modal/confirm_delete.html', ctx)
